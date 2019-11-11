@@ -43,6 +43,7 @@ cdfcomp(fit.weibull, fitcol = c("orchid1"), plotstyle = "ggplot")
 ppcomp(fit.weibull, fitcol = c("orchid1"), plotstyle = "ggplot")
 
 #Layered Diagram
+plot.legend <- c("Burr", "Gamma", "LogNormal", "Weibull")
 denscomp(list(fit.burr, fit.gamma, fit.lnorm, fit.weibull), fitlty = c("solid", "solid", "longdash", "longdash"), fitcol = c("cyan", "red","green", "orchid"), legendtext = plot.legend, plotstyle = "ggplot")
 qqcomp(list(fit.burr, fit.gamma, fit.lnorm, fit.weibull), fitcol = c("cyan", "red","green", "orchid"), legendtext = plot.legend, plotstyle = "ggplot")
 cdfcomp(list(fit.burr, fit.gamma, fit.lnorm, fit.weibull), fitlty = c("solid", "solid", "solid", "solid"), fitcol = c("cyan", "red","green", "orchid"), legendtext = plot.legend, plotstyle = "ggplot")
