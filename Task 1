@@ -1,0 +1,48 @@
+#Load Packages
+library("readxl")
+library("MASS")
+library("fitdistrplus")
+library("actuar")
+library("goftest")
+
+#Obtain & rename data 
+Data <- read_excel("LossData.xlsx", col_names = FALSE)
+names(Data)[1] <- "Claim Size"
+
+#Fitting data against distributions
+fit.weibull <- fitdist(Data$`Claim Size`, distr = "weibull", method = "mle")
+fit.gamma <- fitdist(Data$`Claim Size`, distr = "gamma", method = "mle")
+fit.lnorm <- fitdist(Data$`Claim Size`, distr = "lnorm", method = "mle")
+fit.burr <- fitdist(Data$`Claim Size`,"burr", start = list(shape1 = 2.3, shape2 = 2.4, rate = 0.05))
+
+#Goodness of fit
+gofstat(list(fit.burr, fit.gamma, fit.lnorm, fit.weibull), fitnames=c("Burr", "Gamma", "Lnorm", "Weibull"))
+
+#Burr Graphs
+denscomp(fit.burr, fitcol = c("cyan"), plotstyle = "ggplot")
+qqcomp(fit.burr, fitcol = c("cyan"), plotstyle = "ggplot")
+cdfcomp(fit.burr, fitcol = c("cyan"), plotstyle = "ggplot")
+ppcomp(fit.burr, fitcol = c("cyan"), plotstyle = "ggplot")
+
+#Gamma Graphs
+denscomp(fit.gamma, fitcol = c("red"), plotstyle = "ggplot")
+qqcomp(fit.gamma, fitcol = c("red"), plotstyle = "ggplot")
+cdfcomp(fit.gamma, fitcol = c("red"), plotstyle = "ggplot")
+ppcomp(fit.gamma, fitcol = c("red"), plotstyle = "ggplot")
+
+#LogNormal Graphs             
+denscomp(fit.lnorm, fitcol = c("green"), plotstyle = "ggplot")
+qqcomp(fit.lnorm, fitcol = c("green"), plotstyle = "ggplot")
+cdfcomp(fit.lnorm, fitcol = c("green"), plotstyle = "ggplot")
+ppcomp(fit.lnorm, fitcol = c("green"), plotstyle = "ggplot")
+
+#Weibull Graphs
+denscomp(fit.weibull, fitcol = c("orchid1"), plotstyle = "ggplot")
+qqcomp(fit.weibull, fitcol = c("orchid1"), plotstyle = "ggplot")
+cdfcomp(fit.weibull, fitcol = c("orchid1"), plotstyle = "ggplot")
+ppcomp(fit.weibull, fitcol = c("orchid1"), plotstyle = "ggplot")
+
+#Layered Diagram
+denscomp(list(fit.burr, fit.gamma, fit.lnorm, fit.weibull), fitlty = c("solid", "solid", "longdash", "longdash"), fitcol = c("cyan", "red","green", "orchid"), legendtext = plot.legend, plotstyle = "ggplot")
+qqcomp(list(fit.burr, fit.gamma, fit.lnorm, fit.weibull), fitcol = c("cyan", "red","green", "orchid"), legendtext = plot.legend, plotstyle = "ggplot")
+cdfcomp(list(fit.burr, fit.gamma, fit.lnorm, fit.weibull), fitlty = c("solid", "solid", "solid", "solid"), fitcol = c("cyan", "red","green", "orchid"), legendtext = plot.legend, plotstyle = "ggplot")
